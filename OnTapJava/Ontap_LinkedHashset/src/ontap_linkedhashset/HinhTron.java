@@ -22,6 +22,16 @@ public class HinhTron {
         return bankinh;
     }
 
+    public HinhTron(float bankinh, String mahinh) {
+        this.bankinh = bankinh;
+        this.mahinh = mahinh;
+    }
+
+    public HinhTron() {
+    }
+    
+    
+
     public void setBankinh(float bankinh) throws Exception {
         if (bankinh < 0) {
             throw new Exception("Ban kinh nho hon 0, Nhap lai!");
@@ -43,7 +53,7 @@ public class HinhTron {
             Scanner sc = new Scanner(System.in);
             Random rand = new Random();
             try {
-                setMahinh("HT-" + rand.nextInt(10) + 10);
+                setMahinh("HT-" + rand.nextInt(100) + 10);
                 System.out.print("Nhap ban kinh: ");
                 setBankinh(sc.nextFloat());
                 break;

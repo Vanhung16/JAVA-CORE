@@ -4,49 +4,65 @@
  */
 package ontap_linkedhashset;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Scanner;
 import static java.util.Spliterators.iterator;
+import java.util.TreeSet;
 
 public class Ontap_LinkedHashset {
 
-    static LinkedHashSet<HinhTron> list = new LinkedHashSet<>();
+    static LinkedHashSet<HinhTron> list = new LinkedHashSet<HinhTron>();
+    static TreeSet<HinhTron> treeSet = new TreeSet<>(new mahinhcmp());
     static Scanner sc = new Scanner(System.in);
 
-    public static void kiemtra() {
-        System.out.print("Nhap ma hinh: ");
-        Boolean bool = true;
-        HinhTron x = null;
-        String mahinh = sc.nextLine();
-
+    public static boolean checkMaHinh(String mahinh) {
         for (HinhTron hinhTron : list) {
-            if (hinhTron.getMahinh().compareTo(mahinh) == 0) {
-                bool = true;
-                return;
-            } else {
-                bool = false;
+            if (hinhTron.getMahinh().equals(mahinh)) {
+                return true;
             }
         }
-        if (bool == true) {
-            System.out.println("Khong them duoc");
-        } else {
-            x.setMahinh(mahinh);
-            while (true) {
-                try {
-                    System.out.print("Nhap ban kinh: ");
-                    x.setBankinh(sc.nextFloat());
-                    break;
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
-        }
-//        if (x != null) {
-//            list.add(x);
-//        }
-        inds();
+        return false;
+    }
 
+    public static void kiemtra() {
+        HinhTron x = null;
+        LinkedList<HinhTron> linkedList = new LinkedList<HinhTron>();
+        System.out.print("Nhap ma hinh: ");
+        String mahinh = sc.nextLine();
+        if (checkMaHinh(mahinh)) {
+            System.out.println("Ma hinh da ton tai, Khong them duoc!");
+        } else {
+            try {
+                System.out.println("Nhap ban kinh: ");
+                float bankinh = sc.nextFloat();
+                if (bankinh < 0) {
+                    throw new Exception("ban kinh nho hon 0");
+                }
+                x = new HinhTron(bankinh, mahinh);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        linkedList.addAll(list);
+        if (x != null) {
+            linkedList.addFirst(x);
+        }
+        list.clear();
+        list.addAll(linkedList);
+        inds();
+    }
+
+    public static void sx() {
+        TreeSet<HinhTron> treeSet = new TreeSet<>(new mahinhcmp());
+        treeSet.addAll(list);
+        list.clear();
+        list.addAll(treeSet);
+        inds();
     }
 
     public static void nhapds() {
@@ -76,6 +92,9 @@ public class Ontap_LinkedHashset {
         inds();
         System.out.println("__________");
         kiemtra();
+        System.out.println("__________");
+        System.out.println("danh sach sau khi sap xep");
+        sx();
     }
 
 }
